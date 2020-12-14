@@ -1,0 +1,43 @@
+{
+    "name": "lenderspender/laravel-webhook-channel",
+    "description": "Send notifications through user defined webhooks",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "LenderSpender\\LaravelWebhookChannel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LenderSpender\\LaravelWebhookChannel\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.4 | ^8.0",
+        "spatie/laravel-webhook-server": "^1.11",
+        "laravel/framework": "^7.4 | ^8.0"
+    },
+    "require-dev": {
+        "lenderspender/php-cs-fixer-rules": "dev-master",
+        "orchestra/testbench": "^6.6",
+        "phpstan/phpstan": "^0.12.59",
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bert van Hoekelen",
+            "email": "bert@magwel.nl"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LenderSpender\\LaravelWebhookChannel\\LaravelWebhookNotificationServiceProvider"
+            ]
+        }
+    }
+}

@@ -20,8 +20,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use LenderSpender\LaravelWebhookChannel\ReceivesWebhooks;
-use LenderSpender\LaravelWebhookChannel\WebhookData;
+use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
+use LenderSpender\LaravelWebhookChannel\Receiver\WebhookData;
 
 class User extends Model implements ReceivesWebhooks
 {
@@ -46,7 +46,7 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use LenderSpender\LaravelWebhookChannel\ReceivesWebhooks;use LenderSpender\LaravelWebhookChannel\WebhookMessage;use LenderSpender\LaravelWebhookChannel\WebhookNotification;
+use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;use LenderSpender\LaravelWebhookChannel\Receiver\WebhookMessage;use LenderSpender\LaravelWebhookChannel\WebhookNotification;
 
 class StatusUpdatedNotification extends Notification implements WebhookNotification
 {
@@ -79,3 +79,30 @@ class NotificationController
     }
 }
 ```
+
+## Viewing
+
+Each webhook call is stored in the WebhookNotificationMessage model. Implement the `HasWebhookNotificationMessages` on the model that you would like to view the webhook messages from.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use LenderSpender\LaravelWebhookChannel\Receiver\HasWebhookNotificationMessages;
+use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
+
+class User extends Model implements ReceivesWebhooks
+{
+    use Notifiable;
+    use HasWebhookNotificationMessages;
+}
+``` 
+
+## Retrying send webhooks
+WebhookNotificationMessages can be retried by calling the callWebhook method on the `WebhookNotificationMessage` model.
+

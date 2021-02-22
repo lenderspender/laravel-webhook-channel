@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace LenderSpender\LaravelWebhookChannel;
+namespace LenderSpender\LaravelWebhookChannel\Receiver;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WebhookMessage
+class WebhookMessage implements Arrayable
 {
     public string $type;
-    private JsonResource $resource;
+    public JsonResource $resource;
 
     public function __construct(string $type, JsonResource $resource)
     {

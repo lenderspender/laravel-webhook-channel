@@ -20,6 +20,7 @@ class WebhookChannel
 
         $webhookMessage = $notification->toWebhook($notifiable);
 
+        /** @var WebhookNotificationMessage $message */
         $message = WebhookNotificationMessage::query()->create([
             'id' => $notification->id,
             'event' => WebhookEvent::CREATED(),

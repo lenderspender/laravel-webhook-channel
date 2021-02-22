@@ -12,6 +12,7 @@ class WebhookCallFailedListener
 {
     public function handle(WebhookCallFailedEvent $webhookCallFailedEvent): void
     {
+        /** @var WebhookNotificationMessage|null $notification */
         $notification = WebhookNotificationMessage::query()->find($webhookCallFailedEvent->uuid);
 
         if (! $notification) {

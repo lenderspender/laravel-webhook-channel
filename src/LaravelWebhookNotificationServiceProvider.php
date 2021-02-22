@@ -20,7 +20,7 @@ class LaravelWebhookNotificationServiceProvider extends ServiceProvider
         $this->app->make(ChannelManager::class)
             ->extend('webhook', fn (Application $app) => $app->make(WebhookChannel::class));
 
-        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 
     public function register(): void

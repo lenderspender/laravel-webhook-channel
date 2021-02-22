@@ -9,14 +9,14 @@ use Illuminate\Http\Response;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Event;
+use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
+use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
 use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
+use LenderSpender\LaravelWebhookChannel\Receiver\WebhookData;
+use LenderSpender\LaravelWebhookChannel\Receiver\WebhookMessage;
 use LenderSpender\LaravelWebhookChannel\Tests\Stubs\NotifiableUser;
 use LenderSpender\LaravelWebhookChannel\WebhookChannel;
-use LenderSpender\LaravelWebhookChannel\Receiver\WebhookData;
-use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
-use LenderSpender\LaravelWebhookChannel\Receiver\WebhookMessage;
 use LenderSpender\LaravelWebhookChannel\WebhookNotification;
-use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
 use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
 use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 
@@ -30,6 +30,8 @@ class WebhookChannelTest extends TestCase
         parent::setUp();
 
         $this->webhookChannel = $this->app->make(WebhookChannel::class);
+
+        /* @phpstan-ignore-next-line */
         $this->notifiable = NotifiableUser::query()->create([
             'name' => 'John',
             'email' => 'john@example.com',
@@ -46,7 +48,7 @@ class WebhookChannelTest extends TestCase
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
-        self::assertTrue($message->notifiable->is($this->notifiable));
+        self::assertTrue($message->notifiable->is($this->notifiable)); /* @phpstan-ignore-line */
         self::assertEquals(WebhookEvent::DELIVERED(), $message->event);
         self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
         self::assertStringContainsString('{"type":"foo_was_updated","data":{"foo":"bar"}}', $message->response);
@@ -62,7 +64,7 @@ class WebhookChannelTest extends TestCase
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
-        self::assertTrue($message->notifiable->is($this->notifiable));
+        self::assertTrue($message->notifiable->is($this->notifiable)); /* @phpstan-ignore-line */
         self::assertEquals(WebhookEvent::FAILED(), $message->event);
         self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
         self::assertEquals('', $message->response);
@@ -90,6 +92,16 @@ class WebhookChannelTest extends TestCase
             public function routeNotificationForWebhook(): ?WebhookData
             {
                 return null;
+            }
+
+            public function getMorphClass(): string
+            {
+                return 'anonymise-notification';
+            }
+
+            public function getKey(): string
+            {
+                return 'foo-bar';
             }
         };
 

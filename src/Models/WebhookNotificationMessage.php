@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LenderSpender\LaravelWebhookChannel\Models;
 
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -18,7 +17,7 @@ use Spatie\WebhookServer\WebhookCall;
  * @property string|int                                                     $notifiable_id
  * @property string                                                         $notifiable_type
  * @property \LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks $notifiable
- * @property DatabaseNotification|null                                       $databaseNotification
+ * @property DatabaseNotification|null                                      $databaseNotification
  * @property array                                                          $webhook_message
  * @property string|null                                                    $response
  * @property int|null                                                       $response_status
@@ -40,7 +39,7 @@ class WebhookNotificationMessage extends Model
     protected $casts = [
         'webhook_message' => 'array',
         'response_status' => 'int',
-        'handled_at' => 'datetime'
+        'handled_at' => 'datetime',
     ];
 
     /** @var string[] */

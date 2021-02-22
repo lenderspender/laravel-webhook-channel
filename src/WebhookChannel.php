@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace LenderSpender\LaravelWebhookChannel;
 
-use Spatie\WebhookServer\WebhookCall;
+use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
+use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
+use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
 
 class WebhookChannel
 {
@@ -18,12 +20,14 @@ class WebhookChannel
 
         $webhookMessage = $notification->toWebhook($notifiable);
 
-        WebhookCall::create()
-            ->url($webhookData->url)
-            ->useSecret($webhookData->secret ?? '')
-            ->withTags(['webhook'])
-            ->uuid($notification->id)
-            ->payload($webhookMessage->toArray())
-            ->dispatchNow();
+        $message = WebhookNotificationMessage::query()->create([
+            'id' => $notification->id,
+            'event' => WebhookEvent::CREATED(),
+            'notifiable_id' => $notifiable->getKey(),
+            'notifiable_type' => $notifiable->getMorphClass(),
+            'webhook_message' => $webhookMessage->toArray(),
+        ]);
+
+        $message->callWebhook();
     }
 }

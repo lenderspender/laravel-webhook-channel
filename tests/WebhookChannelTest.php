@@ -5,49 +5,81 @@ declare(strict_types=1);
 namespace LenderSpender\LaravelWebhookChannel\Tests;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Event;
-use LenderSpender\LaravelWebhookChannel\ReceivesWebhooks;
+use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
+use LenderSpender\LaravelWebhookChannel\Tests\Stubs\NotifiableUser;
 use LenderSpender\LaravelWebhookChannel\WebhookChannel;
-use LenderSpender\LaravelWebhookChannel\WebhookData;
-use LenderSpender\LaravelWebhookChannel\WebhookMessage;
+use LenderSpender\LaravelWebhookChannel\Receiver\WebhookData;
+use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
+use LenderSpender\LaravelWebhookChannel\Receiver\WebhookMessage;
 use LenderSpender\LaravelWebhookChannel\WebhookNotification;
+use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
+use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
 use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 
 class WebhookChannelTest extends TestCase
 {
     private WebhookChannel $webhookChannel;
+    private NotifiableUser $notifiable;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->webhookChannel = $this->app->make(WebhookChannel::class);
+        $this->notifiable = NotifiableUser::query()->create([
+            'name' => 'John',
+            'email' => 'john@example.com',
+            'password' => 'foobar',
+        ]);
     }
 
     public function test_a_webhook_notification_can_be_send(): void
     {
+        $this->notifiable::$webhookUrl = 'https://postman-echo.com/post';
+        $this->notifiable->notifyNow($this->getWebhookNotification());
+
+        /** @var WebhookNotificationMessage $message */
+        $message = $this->notifiable->webhookNotificationMessages()->first();
+
+        self::assertNotNull($message->id);
+        self::assertTrue($message->notifiable->is($this->notifiable));
+        self::assertEquals(WebhookEvent::DELIVERED(), $message->event);
+        self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
+        self::assertStringContainsString('{"type":"foo_was_updated","data":{"foo":"bar"}}', $message->response);
+        self::assertSame(Response::HTTP_OK, $message->response_status);
+    }
+
+    public function test_a_webhook_can_fail(): void
+    {
+        $this->notifiable::$webhookUrl = 'https://postman-echo.com/status/404';
+        $this->notifiable->notifyNow($this->getWebhookNotification());
+
+        /** @var WebhookNotificationMessage $message */
+        $message = $this->notifiable->webhookNotificationMessages()->first();
+
+        self::assertNotNull($message->id);
+        self::assertTrue($message->notifiable->is($this->notifiable));
+        self::assertEquals(WebhookEvent::FAILED(), $message->event);
+        self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
+        self::assertEquals('', $message->response);
+        self::assertSame(Response::HTTP_NOT_FOUND, $message->response_status);
+    }
+
+    public function test_a_webhook_notification_message_is_created(): void
+    {
+        Event::fake([WebhookCallFailedEvent::class]);
         Event::fake([WebhookCallSucceededEvent::class]);
 
-        $notifiable = new class() extends AnonymousNotifiable implements ReceivesWebhooks {
-            public function routeNotificationForWebhook(): ?WebhookData
-            {
-                return new WebhookData('https://example.com', 'foo');
-            }
-        };
+        $this->notifiable->notifyNow($this->getWebhookNotification());
 
-        $notifiable->notifyNow($this->getWebhookNotification());
+        /** @var WebhookNotificationMessage $message */
+        $message = WebhookNotificationMessage::query()->firstOrFail();
 
-        Event::assertDispatched(WebhookCallSucceededEvent::class, function (WebhookCallSucceededEvent $event) {
-            self::assertSame('foo_was_updated', $event->payload['type']);
-            self::assertSame('bar', $event->payload['data']['foo']);
-            self::assertNotNull($event->response->getBody()->getContents());
-            self::assertSame('https://example.com', $event->webhookUrl);
-            self::assertSame('047de5a643fa9faa4ce2de603ae4311d5410802afd4f480520d0dcb36c5abff3', $event->headers['Signature']);
-
-            return true;
-        });
+        self::assertEquals(WebhookEvent::CREATED(), $message->event);
     }
 
     public function test_a_webhook_notification_is_not_sent_when_there_is_no_webhook_url_set(): void

@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace LenderSpender\LaravelWebhookChannel\Listeners;
+
+use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
+use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
+use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
+
+class WebhookCallFailedListener
+{
+    public function handle(WebhookCallFailedEvent $webhookCallFailedEvent): void
+    {
+        $notification = WebhookNotificationMessage::query()->find($webhookCallFailedEvent->uuid);
+
+        if (! $notification) {
+            return;
+        }
+
+        $response = optional($webhookCallFailedEvent->response);
+
+        $notification->update([
+            'response' => (string) $response->getBody(),
+            'response_status' => (string) $response->getStatusCode(),
+            'handled_at' => now(),
+            'event' => WebhookEvent::FAILED(),
+        ]);
+    }
+}

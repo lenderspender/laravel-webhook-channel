@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LenderSpender\LaravelWebhookChannel;
+namespace LenderSpender\LaravelWebhookChannel\Receiver;
 
 class WebhookData
 {

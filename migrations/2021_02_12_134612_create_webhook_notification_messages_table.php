@@ -12,7 +12,7 @@ class CreateWebhookNotificationMessagesTable extends Migration
     {
         Schema::create('webhook_notification_messages', function (Blueprint $table) {
             $table->uuid('id');
-            $table->morphs('notifiable');
+            $table->morphs('notifiable', 'wnm_notifiable_type_notifiable_id_index');
             $table->string('event');
             $table->text('webhook_message');
             $table->text('response')->nullable();

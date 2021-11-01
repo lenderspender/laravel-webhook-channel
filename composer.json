@@ -21,7 +21,7 @@
     "require-dev": {
         "lenderspender/php-cs-fixer-rules": "dev-master",
         "orchestra/testbench": "^6.6",
-        "phpstan/phpstan": "^0.12.59",
+        "phpstan/phpstan": "^0.12.59 || ^1.0.0",
         "phpunit/phpunit": "^9.5"
     },
     "config": {

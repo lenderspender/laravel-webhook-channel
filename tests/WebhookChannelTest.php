@@ -15,7 +15,6 @@ use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
 use LenderSpender\LaravelWebhookChannel\Receiver\WebhookData;
 use LenderSpender\LaravelWebhookChannel\Receiver\WebhookMessage;
 use LenderSpender\LaravelWebhookChannel\Tests\Stubs\NotifiableUser;
-use LenderSpender\LaravelWebhookChannel\WebhookChannel;
 use LenderSpender\LaravelWebhookChannel\WebhookNotification;
 use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
 use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;

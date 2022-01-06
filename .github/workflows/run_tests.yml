@@ -10,9 +10,8 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.1]
-        dependency-version: [prefer-stable]
 
-    name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+    name: P${{ matrix.php }}
 
     steps:
       - name: Checkout code
@@ -34,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+          composer update --prefer-dist --no-interaction
 
       - name: Execute tests
         run: ./vendor/bin/phpunit

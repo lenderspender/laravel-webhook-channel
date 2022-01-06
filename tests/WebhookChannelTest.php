@@ -22,14 +22,11 @@ use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
 
 class WebhookChannelTest extends TestCase
 {
-    private WebhookChannel $webhookChannel;
     private NotifiableUser $notifiable;
 
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->webhookChannel = $this->app->make(WebhookChannel::class);
 
         /* @phpstan-ignore-next-line */
         $this->notifiable = NotifiableUser::query()->create([

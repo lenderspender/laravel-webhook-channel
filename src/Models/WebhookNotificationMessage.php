@@ -32,7 +32,7 @@ class WebhookNotificationMessage extends Model
 
     public $incrementing = false;
 
-    /** @var array */
+    /** @var array<string> */
     protected $guarded = [];
 
     /** @var string[] */

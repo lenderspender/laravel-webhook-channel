@@ -41,6 +41,7 @@ class WebhookChannelTest extends TestCase
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
         /** @var WebhookNotificationMessage $message */
+        // @phpstan-ignore-next-line
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
@@ -57,6 +58,7 @@ class WebhookChannelTest extends TestCase
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
         /** @var WebhookNotificationMessage $message */
+        // @phpstan-ignore-next-line
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);

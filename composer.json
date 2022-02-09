@@ -3,6 +3,7 @@
     "description": "Send notifications through user defined webhooks",
     "type": "library",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "LenderSpender\\LaravelWebhookChannel\\": "src/"

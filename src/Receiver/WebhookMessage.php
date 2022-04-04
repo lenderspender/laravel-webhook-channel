@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @implements Arrayable<string, string|array|Arrayable|\JsonSerializable> */
 class WebhookMessage implements Arrayable
 {
     public string $type;
@@ -19,6 +20,7 @@ class WebhookMessage implements Arrayable
         $this->resource = $resource;
     }
 
+    //@phpstan-ignore-next-line
     public function toArray(): array
     {
         return [

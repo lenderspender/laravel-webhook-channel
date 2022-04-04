@@ -67,6 +67,6 @@ class WebhookNotificationMessage extends Model
             ->withTags(['webhook'])
             ->uuid($this->id)
             ->payload($this->webhook_message)
-            ->dispatchNow();
+            ->dispatch();
     }
 }

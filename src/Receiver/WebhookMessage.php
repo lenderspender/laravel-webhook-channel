@@ -20,7 +20,7 @@ class WebhookMessage implements Arrayable
         $this->resource = $resource;
     }
 
-    //@phpstan-ignore-next-line
+    // @phpstan-ignore-next-line
     public function toArray(): array
     {
         return [

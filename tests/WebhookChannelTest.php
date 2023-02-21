@@ -48,7 +48,10 @@ class WebhookChannelTest extends TestCase
         self::assertTrue($message->notifiable->is($this->notifiable)); /* @phpstan-ignore-line */
         self::assertEquals(WebhookEvent::DELIVERED(), $message->event);
         self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
-        self::assertStringContainsString('{"type":"foo_was_updated","data":{"foo":"bar"}}', $message->response);
+        self::assertStringContainsString('"type": "foo_was_updated",', $message->response);
+        self::assertStringContainsString('"data": {
+      "foo": "bar"
+    }', $message->response);
         self::assertSame(Response::HTTP_OK, $message->response_status);
     }
 

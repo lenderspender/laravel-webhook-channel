@@ -38,4 +38,3 @@ jobs:
 
       - name: Execute static analysis
         run: vendor/bin/phpstan analyse
-  LenderSpender\LaravelWebhookChannel\Tests\WebhookChannelTest::

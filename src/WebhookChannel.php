@@ -22,6 +22,7 @@ class WebhookChannel
 
         /** @var WebhookNotificationMessage $message */
         $message = WebhookNotificationMessage::query()->create([
+            /* @phpstan-ignore-next-line */
             'id' => $notification->id,
             'event' => WebhookEvent::CREATED(),
             'notifiable_id' => $notifiable->getKey(),

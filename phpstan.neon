@@ -4,5 +4,3 @@ parameters:
         - tests
     level: 7
     checkMissingIterableValueType: false
-    ignoreErrors:
-        - '#Constant .*::.* is unused.#'

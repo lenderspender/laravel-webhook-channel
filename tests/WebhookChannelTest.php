@@ -46,7 +46,7 @@ class WebhookChannelTest extends TestCase
 
         self::assertNotNull($message->id);
         self::assertTrue($message->notifiable->is($this->notifiable)); /* @phpstan-ignore-line */
-        self::assertEquals(WebhookEvent::DELIVERED(), $message->event);
+        self::assertEquals(WebhookEvent::DELIVERED, $message->event);
         self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
         self::assertStringContainsString('"type": "foo_was_updated",', $message->response);
         self::assertStringContainsString('"data": {
@@ -66,7 +66,7 @@ class WebhookChannelTest extends TestCase
 
         self::assertNotNull($message->id);
         self::assertTrue($message->notifiable->is($this->notifiable)); /* @phpstan-ignore-line */
-        self::assertEquals(WebhookEvent::FAILED(), $message->event);
+        self::assertEquals(WebhookEvent::FAILED, $message->event);
         self::assertEquals(['type' => 'foo_was_updated', 'data' => ['foo' => 'bar']], $message->webhook_message);
         self::assertEquals('', $message->response);
         self::assertSame(Response::HTTP_NOT_FOUND, $message->response_status);
@@ -84,7 +84,7 @@ class WebhookChannelTest extends TestCase
         /** @var WebhookNotificationMessage $message */
         $message = WebhookNotificationMessage::query()->firstOrFail();
 
-        self::assertEquals(WebhookEvent::CREATED(), $message->event);
+        self::assertEquals(WebhookEvent::CREATED, $message->event);
     }
 
     public function test_a_webhook_notification_is_not_sent_when_there_is_no_webhook_url_set(): void

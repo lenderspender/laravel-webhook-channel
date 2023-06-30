@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\DatabaseNotification;
-use LenderSpender\LaravelEnums\Models\Traits\CastsEnums;
 use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
 use Spatie\WebhookServer\WebhookCall;
 
@@ -28,8 +27,6 @@ use Spatie\WebhookServer\WebhookCall;
  */
 class WebhookNotificationMessage extends Model
 {
-    use CastsEnums;
-
     public $incrementing = false;
 
     /** @var array<string> */
@@ -37,14 +34,10 @@ class WebhookNotificationMessage extends Model
 
     /** @var string[] */
     protected $casts = [
+        'event' => WebhookEvent::class,
         'webhook_message' => 'array',
         'response_status' => 'int',
         'handled_at' => 'datetime',
-    ];
-
-    /** @var string[] */
-    protected $enums = [
-        'event' => WebhookEvent::class,
     ];
 
     public function notifiable(): MorphTo

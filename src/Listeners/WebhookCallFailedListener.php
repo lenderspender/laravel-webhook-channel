@@ -25,7 +25,7 @@ class WebhookCallFailedListener
             'response' => (string) $response->getBody(),
             'response_status' => (string) $response->getStatusCode(),
             'handled_at' => now(),
-            'event' => WebhookEvent::FAILED(),
+            'event' => WebhookEvent::FAILED,
         ]);
     }
 }

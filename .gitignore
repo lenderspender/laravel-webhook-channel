@@ -3,3 +3,5 @@ phpunit.xml
 vendor/
 .phpunit.cache/
 .php-cs-fixer.cache
+.phpunit.cache
+.idea

@@ -25,7 +25,7 @@ class WebhookCallSucceededListener
             'response' => (string) $response->getBody(),
             'response_status' => (string) $response->getStatusCode(),
             'handled_at' => now(),
-            'event' => WebhookEvent::DELIVERED(),
+            'event' => WebhookEvent::DELIVERED,
         ]);
     }
 }

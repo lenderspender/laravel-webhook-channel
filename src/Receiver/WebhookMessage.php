@@ -25,7 +25,7 @@ class WebhookMessage implements Arrayable
     {
         return [
             'type' => $this->type,
-            'data' => $this->resource->toArray(new Request()),
+            'data' => $this->resource,
         ];
     }
 }

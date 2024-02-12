@@ -21,7 +21,7 @@ use Spatie\WebhookServer\WebhookCall;
  * @property string|null                                                    $response
  * @property int|null                                                       $response_status
  * @property \Carbon\CarbonInterface|null                                   $handled_at
- * @property \LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent        $event
+ * @property WebhookEvent                                                   $event
  * @property \Carbon\CarbonInterface                                        $created_at
  * @property \Carbon\CarbonInterface                                        $updated_at
  */

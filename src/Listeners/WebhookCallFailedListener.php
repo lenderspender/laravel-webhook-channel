@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LenderSpender\LaravelWebhookChannel\Listeners;
 
+use GuzzleHttp\Psr7\Response;
 use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
 use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
 use Spatie\WebhookServer\Events\WebhookCallFailedEvent;
@@ -19,6 +20,7 @@ class WebhookCallFailedListener
             return;
         }
 
+        /** @var Response|null $response */
         $response = optional($webhookCallFailedEvent->response);
 
         $notification->update([

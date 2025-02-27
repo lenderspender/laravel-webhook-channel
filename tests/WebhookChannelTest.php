@@ -27,7 +27,6 @@ class WebhookChannelTest extends TestCase
     {
         parent::setUp();
 
-        /* @phpstan-ignore-next-line */
         $this->notifiable = NotifiableUser::query()->create([
             'name' => 'John',
             'email' => 'john@example.com',
@@ -41,7 +40,6 @@ class WebhookChannelTest extends TestCase
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
         /** @var WebhookNotificationMessage $message */
-        // @phpstan-ignore-next-line
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
@@ -61,7 +59,6 @@ class WebhookChannelTest extends TestCase
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
         /** @var WebhookNotificationMessage $message */
-        // @phpstan-ignore-next-line
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
@@ -76,8 +73,7 @@ class WebhookChannelTest extends TestCase
     {
         $this->notifiable::$webhookUrl = 'https://example.com';
 
-        Event::fake([WebhookCallFailedEvent::class]);
-        Event::fake([WebhookCallSucceededEvent::class]);
+        Event::fake([WebhookCallFailedEvent::class, WebhookCallSucceededEvent::class]);
 
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
@@ -91,7 +87,7 @@ class WebhookChannelTest extends TestCase
     {
         Event::fake();
 
-        $notifiable = new class() extends AnonymousNotifiable implements ReceivesWebhooks {
+        $notifiable = new class extends AnonymousNotifiable implements ReceivesWebhooks {
             public function routeNotificationForWebhook(): ?WebhookData
             {
                 return null;
@@ -115,15 +111,21 @@ class WebhookChannelTest extends TestCase
 
     private function getWebhookNotification(): Notification
     {
-        return new class() extends Notification implements WebhookNotification {
+        return new class extends Notification implements WebhookNotification {
+            /**
+             * @return array<string>
+             */
             public function via(): array
             {
                 return ['webhook'];
             }
 
-            public function toWebhook(ReceivesWebhooks $notiable): WebhookMessage
+            public function toWebhook(ReceivesWebhooks $notifiable): WebhookMessage
             {
                 $resource = new class([]) extends JsonResource {
+                    /**
+                     * @return array<string, string>
+                     */
                     public function toArray($request): array
                     {
                         return [

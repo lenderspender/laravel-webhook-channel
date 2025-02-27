@@ -13,18 +13,18 @@ use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
 use Spatie\WebhookServer\WebhookCall;
 
 /**
- * @property string                                                         $id
- * @property string|int                                                     $notifiable_id
- * @property string                                                         $notifiable_type
- * @property \LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks $notifiable
- * @property DatabaseNotification|null                                      $databaseNotification
- * @property array                                                          $webhook_message
- * @property string|null                                                    $response
- * @property int|null                                                       $response_status
- * @property \Carbon\CarbonInterface|null                                   $handled_at
- * @property WebhookEvent                                                   $event
- * @property \Carbon\CarbonInterface                                        $created_at
- * @property \Carbon\CarbonInterface                                        $updated_at
+ * @property string                       $id
+ * @property string|int                   $notifiable_id
+ * @property string                       $notifiable_type
+ * @property ReceivesWebhooks             $notifiable
+ * @property DatabaseNotification|null    $databaseNotification
+ * @property array                        $webhook_message
+ * @property string|null                  $response
+ * @property int|null                     $response_status
+ * @property \Carbon\CarbonInterface|null $handled_at
+ * @property WebhookEvent                 $event
+ * @property \Carbon\CarbonInterface      $created_at
+ * @property \Carbon\CarbonInterface      $updated_at
  */
 class WebhookNotificationMessage extends Model
 {

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
 
 /**
- * @property \Illuminate\Support\Collection|\LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage[] $webhookNotificationMessages
+ * @property \Illuminate\Support\Collection|WebhookNotificationMessage[] $webhookNotificationMessages
  */
 trait HasWebhookNotificationMessages
 {

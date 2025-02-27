@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace LenderSpender\LaravelWebhookChannel\Listeners;
 
-use GuzzleHttp\Psr7\MessageTrait;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Optional;
 use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
 use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
 use Spatie\WebhookServer\Events\WebhookCallFailedEvent;

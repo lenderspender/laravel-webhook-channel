@@ -88,7 +88,7 @@ class WebhookChannelTest extends TestCase
     {
         Event::fake();
 
-        $notifiable = new class() extends AnonymousNotifiable implements ReceivesWebhooks {
+        $notifiable = new class extends AnonymousNotifiable implements ReceivesWebhooks {
             public function routeNotificationForWebhook(): ?WebhookData
             {
                 return null;
@@ -112,8 +112,10 @@ class WebhookChannelTest extends TestCase
 
     private function getWebhookNotification(): Notification
     {
-        return new class() extends Notification implements WebhookNotification {
-            /** @return array<string> */
+        return new class extends Notification implements WebhookNotification {
+            /**
+             * @return array<string>
+             */
             public function via(): array
             {
                 return ['webhook'];
@@ -122,7 +124,9 @@ class WebhookChannelTest extends TestCase
             public function toWebhook(ReceivesWebhooks $notiable): WebhookMessage
             {
                 $resource = new class([]) extends JsonResource {
-                    /** @return array<string, string> */
+                    /**
+                     * @return array<string, string>
+                     */
                     public function toArray($request): array
                     {
                         return [

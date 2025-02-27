@@ -71,7 +71,7 @@ class WebhookChannelTest extends TestCase
 
     public function test_a_webhook_notification_message_is_created(): void
     {
-        $this->notifiable::$webhookUrl = 'https://example.com';
+        $this->notifiable::$webhookUrl = 'https://postman-echo.com/post';
 
         Event::fake([WebhookCallFailedEvent::class]);
         Event::fake([WebhookCallSucceededEvent::class]);
@@ -121,7 +121,7 @@ class WebhookChannelTest extends TestCase
                 return ['webhook'];
             }
 
-            public function toWebhook(ReceivesWebhooks $notiable): WebhookMessage
+            public function toWebhook(ReceivesWebhooks $notifiable): WebhookMessage
             {
                 $resource = new class([]) extends JsonResource {
                     /**

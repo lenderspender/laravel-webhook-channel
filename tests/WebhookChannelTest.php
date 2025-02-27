@@ -71,10 +71,9 @@ class WebhookChannelTest extends TestCase
 
     public function test_a_webhook_notification_message_is_created(): void
     {
-        $this->notifiable::$webhookUrl = 'https://postman-echo.com/post';
+        $this->notifiable::$webhookUrl = 'https://example.com';
 
-        Event::fake([WebhookCallFailedEvent::class]);
-        Event::fake([WebhookCallSucceededEvent::class]);
+        Event::fake([WebhookCallFailedEvent::class, WebhookCallSucceededEvent::class]);
 
         $this->notifiable->notifyNow($this->getWebhookNotification());
 

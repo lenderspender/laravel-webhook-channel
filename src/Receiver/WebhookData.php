@@ -9,7 +9,7 @@ class WebhookData
     public string $url;
     public ?string $secret = null;
 
-    public function __construct(string $url, string $secret = null)
+    public function __construct(string $url, ?string $secret = null)
     {
         $this->url = $url;
         $this->secret = $secret;

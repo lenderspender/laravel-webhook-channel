@@ -12,6 +12,9 @@ use LenderSpender\LaravelWebhookChannel\Models\WebhookNotificationMessage;
  */
 trait HasWebhookNotificationMessages
 {
+    /**
+     * @return MorphMany<WebhookNotificationMessage, $this>
+     */
     public function webhookNotificationMessages(): MorphMany
     {
         return $this->morphMany(WebhookNotificationMessage::class, 'notifiable');

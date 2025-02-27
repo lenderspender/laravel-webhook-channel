@@ -27,7 +27,6 @@ class WebhookChannelTest extends TestCase
     {
         parent::setUp();
 
-        /* @phpstan-ignore-next-line */
         $this->notifiable = NotifiableUser::query()->create([
             'name' => 'John',
             'email' => 'john@example.com',
@@ -41,7 +40,6 @@ class WebhookChannelTest extends TestCase
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
         /** @var WebhookNotificationMessage $message */
-        // @phpstan-ignore-next-line
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
@@ -61,7 +59,6 @@ class WebhookChannelTest extends TestCase
         $this->notifiable->notifyNow($this->getWebhookNotification());
 
         /** @var WebhookNotificationMessage $message */
-        // @phpstan-ignore-next-line
         $message = $this->notifiable->webhookNotificationMessages()->first();
 
         self::assertNotNull($message->id);
@@ -116,6 +113,7 @@ class WebhookChannelTest extends TestCase
     private function getWebhookNotification(): Notification
     {
         return new class() extends Notification implements WebhookNotification {
+            /** @return array<string> */
             public function via(): array
             {
                 return ['webhook'];
@@ -124,6 +122,7 @@ class WebhookChannelTest extends TestCase
             public function toWebhook(ReceivesWebhooks $notiable): WebhookMessage
             {
                 $resource = new class([]) extends JsonResource {
+                    /** @return array<string, string> */
                     public function toArray($request): array
                     {
                         return [

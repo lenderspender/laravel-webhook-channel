@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\DatabaseNotification;
 use LenderSpender\LaravelWebhookChannel\Enums\WebhookEvent;
+use LenderSpender\LaravelWebhookChannel\Receiver\ReceivesWebhooks;
 use Spatie\WebhookServer\WebhookCall;
 
 /**
@@ -40,11 +41,17 @@ class WebhookNotificationMessage extends Model
         'handled_at' => 'datetime',
     ];
 
+    /**
+     * @return MorphTo<Model, $this>
+     */
     public function notifiable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return BelongsTo<DatabaseNotification, $this>
+     */
     public function databaseNotification(): BelongsTo
     {
         return $this->belongsTo(DatabaseNotification::class, 'id', 'id');

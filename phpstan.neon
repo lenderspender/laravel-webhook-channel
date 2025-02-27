@@ -3,4 +3,3 @@ parameters:
         - src
         - tests
     level: 7
-    checkMissingIterableValueType: false
